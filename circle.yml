@@ -1,0 +1,9 @@
+machine:
+  node:
+    version: 6.2
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - ./ci.sh
