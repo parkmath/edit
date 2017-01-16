@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "standard",
-    "start": "budo index.js:bundle.js --dir dist -- -t envify",
+    "start": "budo index.js:dist/bundle.js -- -t envify",
     "bundle": "browserify -t envify index.js > dist/bundle.js"
   },
   "keywords": [],

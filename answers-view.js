@@ -95,7 +95,8 @@ function CodeMirrorWidget (send) {
   const cm = window.cm = CodeMirror(root, {
     mode: 'mathdown',
     value: '',
-    lineWrapping: true
+    lineWrapping: true,
+    viewportMargin: Infinity
   })
 
   cm.on('change', debounce(onChange, 300))

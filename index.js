@@ -151,9 +151,10 @@ app.model({
   }
 })
 
+const basepath = window.location.pathname
 app.router([
-  ['/', require('./main-view')],
-  ['/answers/:lesson', require('./answers-view')]
+  [`${basepath}`, require('./main-view')],
+  [`${basepath}/answers/:lesson`, require('./answers-view')]
 ])
 
 document.querySelector('#app').appendChild(app.start())
