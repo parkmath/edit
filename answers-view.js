@@ -1,4 +1,5 @@
 /* global MathJax */
+/* global localStorage */
 
 const html = require('choo/html')
 const widget = require('cache-element/widget')
@@ -33,13 +34,17 @@ module.exports = function answersView (state, prev, send) {
     codeMirrorWidget = CodeMirrorWidget(send)
   }
 
-  let content = 'Loading...'
+  const answersPath = `_answers/${lesson}-answers.md`
+  let content = ' '
+  let title = ''
   let dirty = false
-  if (state.content) {
-    content = state.content.content || 'Loading...'
+  if (state.content && state.content.path === answersPath) {
     dirty = state.content.content !== state.content.originalContent
+    title = `${state.content.loading ? 'Loading ' : 'Editing '} ${state.content.path} `
+    content = state.content.content || ''
   } else {
-    send('fetchContent', { path: `_answers/${lesson}-answers.md` })
+    title = `Loading ${answersPath}`
+    send('fetchContent', { path: answersPath })
   }
 
   function commit () {
@@ -51,7 +56,11 @@ module.exports = function answersView (state, prev, send) {
     <main>
       ${renderHeader(state, send)}
       <div class='grid grid--gut6 py6'>
-        <div class='col col--5 col--offl6'>
+        <div class='col col--6'>
+          <div class='inline-block txt-bold'>${title}</div>
+          ${dirty ? html`<div class='inline-block round bg-blue-faint color-blue-dark px6'>uncommited changes</div>` : ''}
+        </div>
+        <div class='col col--5'>
           <input id='commit_message' style='width: 100%' class='input' disabled=${!dirty} placeholder='Update ${lesson} answers' />
         </div>
         <div class='col col--1'>
@@ -112,7 +121,7 @@ function CodeMirrorWidget (send) {
     }
   })
 
-  function onChange (change) {
+  function onChange (instanc, change) {
     if (change.origin === 'setValue') { return }
     const newContent = cm.getValue()
     send('updateContent', { content: newContent })

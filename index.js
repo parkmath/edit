@@ -57,13 +57,15 @@ app.model({
     }),
     setContent: (state, data) => {
       if (data.content) {
-        data.content = atob(data.content) // base64 decode
-        data.originalContent = data.content
+        const decoded = atob(data.content) // base64 decode
+        data.content = localStorage.getItem(data.path) || decoded
+        data.originalContent = decoded
       }
       return xtend(state, { content: data })
     },
     updateContent: (state, data) => {
       const lessonContent = xtend(state.content, data)
+      localStorage.setItem(state.content.path, lessonContent.content)
       return xtend(state, {
         content: xtend(state.content, lessonContent)
       })
@@ -119,7 +121,7 @@ app.model({
 
     logout: function (state, data, send, done) {
       ghToken = null
-      localStorage.setItem('ghToken', '')
+      localStorage.clear()
       send('setUser', {}, done)
     },
 
@@ -142,6 +144,7 @@ app.model({
         if (resp.status !== 200) {
           send('setError', `Failed to update ${path}: ${resp.status} ${resp.statusText}`, done)
         } else {
+          localStorage.removeItem(path)
           send('fetchContent', { path: path }, done)
         }
       })
