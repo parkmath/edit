@@ -1,5 +1,4 @@
 /* global MathJax */
-/* global localStorage */
 
 const html = require('choo/html')
 const widget = require('cache-element/widget')
