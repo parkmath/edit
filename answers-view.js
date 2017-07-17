@@ -54,20 +54,22 @@ module.exports = function answersView (state, prev, send) {
   return html`
     <main>
       ${renderHeader(state, send)}
-      <div class='grid grid--gut6 py6'>
-        <div class='col col--6'>
-          <div class='inline-block txt-bold'>${title}</div>
-          ${dirty ? html`<div class='inline-block round bg-blue-faint color-blue-dark px6'>uncommited changes</div>` : ''}
-        </div>
-        <div class='col col--5'>
-          <input id='commit_message' style='width: 100%' class='input' disabled=${!dirty} placeholder='Update ${lesson} answers' />
-        </div>
-        <div class='col col--1'>
-          <button onclick=${commit} style='width: 100%' class='btn btn--s' disabled=${!dirty}>Commit</button>
+      <div id='answer-header'>
+        <div class='grid grid--gut6 py6'>
+          <div class='col col--6'>
+            <div class='inline-block txt-bold'>${title}</div>
+            ${dirty ? html`<div class='inline-block round bg-blue-faint color-blue-dark px6'>uncommited changes</div>` : ''}
+          </div>
+          <div class='col col--5'>
+            <input id='commit_message' style='width: 100%' class='input' disabled=${!dirty} placeholder='Update ${lesson} answers' />
+          </div>
+          <div class='col col--1'>
+            <button onclick=${commit} style='width: 100%' class='btn btn--s' disabled=${!dirty}>Commit</button>
+          </div>
         </div>
       </div>
       <div class='grid grid--gut6 bg-gray-faint'>
-        <div class='col col--6'>
+        <div id='content-wrapper' class='col col--6'>
           ${codeMirrorWidget(content)}
         </div>
         <div class='col col--6 p24'>

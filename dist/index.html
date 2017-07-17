@@ -26,6 +26,12 @@
 
     <style type="text/css">
       .CodeMirror { height: auto; }
+
+      @media print {
+        main header { display: none; } /* login/logout header */
+        #answer-header { display: none; } /* filename / commit button */
+        #content-wrapper { display: none !important; } /* editing pane */
+      }
     </style>
   </head>
   <body>

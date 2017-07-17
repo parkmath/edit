@@ -33,10 +33,12 @@ module.exports = function renderHeader (state, send) {
   }
 
   return html`
-  <header class='grid grid--gut6'>
-    <div class='col col--6 col--offl3'>${renderError(state)}</div>
-    <div class='col col--2 col--offl1'>
-      ${content}
+  <header>
+    <div class='grid grid--gut6'>
+      <div class='col col--6 col--offl3'>${renderError(state)}</div>
+      <div class='col col--2 col--offl1'>
+        ${content}
+      </div>
     </div>
   </header>
   `
