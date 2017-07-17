@@ -95,6 +95,9 @@ function RenderedMarkdownWidget () {
   function render (markdown) {
     const file = remark().use(remarkHtml).process(markdown)
     return file.contents
+      // hack to avoid line break between '\' and '{' in HTML rendered from
+      // "\\{"
+      .replace(/\\\n/g, '\\')
   }
 }
 
