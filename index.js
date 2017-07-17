@@ -18,7 +18,6 @@ const app = choo({
 })
 
 const query = qs.parse(window.location.search.substring(1))
-let ghToken = getToken()
 
 app.model({
   state: {
@@ -28,7 +27,7 @@ app.model({
 
   subscriptions: {
     login: function (send, done) {
-      if (ghToken) {
+      if (getToken()) {
         send('fetchUser', {}, done)
       } else if (query.code) {
         fetch(`https://gatekeeper-parkmath.herokuapp.com/authenticate/${query.code}`, {
@@ -39,8 +38,7 @@ app.model({
           if (result.error || result.message) {
             return send('setError', result.error || result.message, done)
           }
-          ghToken = result.token
-          localStorage.setItem('ghToken', ghToken)
+          localStorage.setItem('ghToken', result.token)
           // strip code off the URL
           window.location.href = window.location.href.replace(/\?[^#]*/, '')
         })
@@ -120,9 +118,11 @@ app.model({
     },
 
     logout: function (state, data, send, done) {
-      ghToken = null
       localStorage.clear()
-      send('setUser', {}, done)
+      return send('setUser', {}, function (err) {
+        if (err) { return done(err) }
+        send('setAnswers', [], done)
+      })
     },
 
     commit: function (state, data, send, done) {
@@ -164,7 +164,7 @@ document.querySelector('#app').appendChild(app.start())
 
 // github API url
 function gh (path, params) {
-  params = qs.stringify(Object.assign({access_token: ghToken}, params))
+  params = qs.stringify(Object.assign({access_token: getToken()}, params))
   if (!path.startsWith('/')) { path = `/${path}` }
   return `https://api.github.com${path}?${params}`
 }

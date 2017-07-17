@@ -1,13 +1,13 @@
 const qs = require('querystring')
 const html = require('choo/html')
-const ghToken = require('./access-token')()
+const ghToken = require('./access-token')
 const renderError = require('./error.js')
 
 const clientId = process.env.PARKMATH_CLIENT_ID
 
 module.exports = function renderHeader (state, send) {
   let content
-  if (!ghToken) {
+  if (!ghToken()) {
     const params = {
       client_id: clientId,
       scope: 'repo'
