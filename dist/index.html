@@ -31,6 +31,20 @@
         main header { display: none; } /* login/logout header */
         #answer-header { display: none; } /* filename / commit button */
         #content-wrapper { display: none !important; } /* editing pane */
+
+        .col--6 { width: auto !important; } /* disable grid layout */
+
+        #rendered {
+          column-count: 2;
+          width: 100%;
+          column-width: 50%;
+        }
+        #rendered h1 { font-size: 24px; }
+        #rendered h2 { font-size: 24px; }
+        #rendered table { margin-top: 24px; width: 100%; table-layout: fixed; }
+        #rendered th { text-align: left; }
+        #rendered th:nth-child(1) { width: 25%; }
+        #rendered th:nth-child(2) { width: 75%; }
       }
     </style>
   </head>
