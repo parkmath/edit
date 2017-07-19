@@ -1,10 +1,9 @@
-/* global atob */
-/* global btoa */
 /* global fetch */
 /* global localStorage */
 const qs = require('querystring')
 const xtend = require('xtend')
 const choo = require('choo')
+const Base64 = require('js-base64').Base64
 
 const getToken = require('./access-token')
 
@@ -55,7 +54,7 @@ app.model({
     }),
     setContent: (state, data) => {
       if (data.content) {
-        const decoded = atob(data.content) // base64 decode
+        const decoded = Base64.decode(data.content)
         data.content = localStorage.getItem(data.path) || decoded
         data.originalContent = decoded
       }
@@ -136,7 +135,7 @@ app.model({
         body: JSON.stringify({
           path: path,
           message: data.message,
-          content: btoa(state.content.content),
+          content: Base64.encode(state.content.content),
           sha: state.content.sha
         })
       })

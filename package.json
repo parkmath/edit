@@ -16,6 +16,7 @@
     "choo": "^4.0.3",
     "codemirror": "^5.22.2",
     "envify": "^4.0.0",
+    "js-base64": "^2.1.9",
     "lodash.debounce": "^4.0.8",
     "remark": "^6.2.0",
     "remark-html": "^5.1.0",
