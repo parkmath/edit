@@ -112,11 +112,24 @@ function CodeMirrorWidget (send) {
     viewportMargin: Infinity
   })
 
-  cm.on('change', debounce(onChange, 300))
+  let currentValue;
+
+  const postContent = debounce(function (content) {
+    send('updateContent', { content: currentValue });
+  }, 300);
+
+  cm.on('change', onChange)
 
   return widget({
     onupdate: function (el, markdown) {
-      if (cm.getValue() !== markdown) {
+      const value = cm.getValue();
+      if (currentValue && value === currentValue) {
+        // avoid resetting the editor's content due to a previous
+        // updateContent action causing a render after more typing
+        // has happened
+        return;
+      }
+      if (value !== currentValue && value !== markdown) {
         cm.setValue(markdown)
       }
     },
@@ -127,8 +140,8 @@ function CodeMirrorWidget (send) {
 
   function onChange (instanc, change) {
     if (change.origin === 'setValue') { return }
-    const newContent = cm.getValue()
-    send('updateContent', { content: newContent })
+    currentValue = cm.getValue();
+    postContent();
   }
 }
 
